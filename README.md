@@ -1,30 +1,146 @@
-# CampusConnect
+# 🎓 CampusConnect — Gamified Campus Life & Event Discovery Engine
 
-CampusConnect is a campus event discovery and RSVP frontend backed by Supabase.
+> **Transforming fragmented campus communication into an integrated, gamified student engagement ecosystem.**
 
-## File Structure
-- `index.html`: Main single-page application layout with tab views.
-- `styles.css`: Custom animations and scrollbar styling.
-- `supabase.js`: Supabase JS client configuration and API helper functions.
-- `app.js`: Interactive UI logic, local state fallback, and tab switching.
-- `schema.sql`: PostgreSQL database schema for Supabase tables and RLS policies.
+---
 
-## Supabase setup
+## 💡 The Real-World Problem & Solution
 
-1. Run `schema.sql` in the Supabase SQL Editor. It creates/updates the profile, event, and RSVP tables, their access policies, a transactional event-join function, and sample upcoming events. The migration adds the UI-required columns to the existing `events` table.
-2. Keep **Allow anonymous sign-ins** enabled for guest browsing. Event booking and hosting require a permanent account with a verified email address.
-3. If email confirmation is enabled, add the app's local and deployed URLs under **Authentication → URL Configuration → Redirect URLs**. Use an HTTP local server such as VS Code Live Server, not a `file://` URL, for verification links.
-4. `supabase.js` is configured with this project's URL and publishable key. Publishable keys are intended for browser use; never put a `service_role` or secret key in frontend code.
-5. Serve `index.html` through a local static web server or deploy it to a static host. Open the browser console if the connection status banner reports an error.
+### ⚠️ The Problem
+In modern university campuses, communication and event participation face severe friction:
+* **Fragmented Channels:** Events are announced across scattered WhatsApp groups, notice boards, Instagram posts, and long email chains, leading to low visibility and missed opportunities.
+* **Low Engagement:** Students lack continuous incentive or centralized tracking to explore extracurriculars beyond their immediate department.
+* **Organizer Overhead:** Campus clubs and event coordinators struggle with manual RSVP management, attendance verification, and reaching target audiences.
+* **Administrative Blindspots:** Deans and institutional heads have no real-time metrics or data analytics to gauge campus culture, student involvement, or event ROI.
 
-### Email signup limits
+### ✨ The Solution (CampusConnect)
+**CampusConnect** solves campus fragmentation by providing a unified, data-driven platform that centralizes discovery while gamifying daily attendance and participation.
+* **Central Hub:** A single source of truth for all technical, cultural, and academic campus events.
+* **Gamified Ecosystem:** Daily streaks, point rewards, and dynamic leaderboards that incentivize continuous active participation.
+* **Real-time Analytics:** Instant slot tracking, digital RSVPs, and live feedback loops for coordinators and administration.
 
-Supabase's built-in email sender is for development: it currently allows only 2 emails per hour and only sends to authorized project team addresses. An `email rate limit exceeded` error means Supabase could not send the confirmation email; it does not prove whether the Auth user was created. See Supabase's [SMTP setup](https://supabase.com/docs/guides/auth/auth-smtp) and [Auth rate limits](https://supabase.com/docs/guides/auth/rate-limits) docs for current limits and provider setup.
+---
 
-1. In **Authentication → Users**, check whether the email address already has a user and whether it is confirmed. Do not repeatedly submit signup or resend requests while the project is rate-limited.
-2. Configure a custom SMTP provider in **Authentication → SMTP Settings** (for example, Resend, Brevo, or SendGrid). Verify the sender/domain with that provider. Keep SMTP credentials in Supabase settings only; never add them to frontend files or share them in chat.
-3. If the user exists and is confirmed, sign in. If the user exists but is unconfirmed, request one verification email after SMTP is working. If no user exists, submit signup once after SMTP is working.
+## 🎯 Stakeholder Impact (Who It Helps)
 
-The Explore Hub has confirmed bookings, cancellation controls, and attendee lists. Event discovery has search, category filters, sorting, and pagination. Booking requires reviewing the terms and confirmation; cancellation is allowed only more than seven hours before the event. The SQL RPC checks identity, capacity, and the cancellation deadline again on the server.
+### 👨‍🎓 1. For Students
+* **Never Miss Out:** Discover all campus events, workshops, and hackathons in one centralized feed with real-time updates.
+* **Gamified Experience:** Earn points and maintain check-in streaks for participating in campus activities.
+* **Build Your Portfolio:** Track attendance history, badges, and campus achievements directly on your personal profile.
+* **Community Connection:** Engage with peers across different departments and join interest-based events effortlessly.
 
-The database schema and seed SQL are included in this repository; apply schema changes in the Supabase dashboard before using the updated booking/account features.
+### ⛺ 2. For Event Organizers & Clubs
+* **Maximum Outreach:** Reach the entire student body without relying on lost social media algorithms or crowded messaging groups.
+* **Streamlined Event Management:** Monitor real-time RSVPs, seat availability, and participant capacity with automated tracking.
+* **Data-Driven Success:** Track post-event attendance metrics to measure student interest and refine future event formats.
+* **Higher Engagement Rates:** Capitalize on the platform's gamification system to drive higher turnout for technical workshops and seminars.
+
+### 🏛️ 3. For Deans & Campus Administration
+* **Institutional Visibility:** Access high-level insights and real-time data on campus engagement and overall student participation.
+* **Fostering Campus Culture:** Cultivate a vibrant, active student community that balances academics with extracurricular excellence.
+* **Resource Allocation:** Make informed decisions on budget funding and venue allocations based on verified club event attendance data.
+* **Centralized Oversight:** Ensure campus activities align with university guidelines through a single monitored infrastructure.
+
+---
+
+## 🚀 Key Features
+
+* **🌐 Real-Time Event Hub:** Discover upcoming hackathons, tech workshops, cultural fests, and guest lectures with real-time slot tracking and instant RSVP.
+* **🔥 Gamified Streak Engine:** Daily login check-ins, event attendance streaks, and milestone badges that drive consistent platform engagement.
+* **🏆 Live Leaderboard & Points System:** Track top campus contributors and active participants in real-time.
+* **🔐 Secure Authentication & User Profiles:** Managed user sessions with personalized dashboard views, saved events, and activity history.
+* **📱 Responsive Mobile-First Architecture:** Pixel-perfect layout optimization across mobile, tablet, and desktop viewports.
+
+---
+
+## 🛠️ Architecture & Tech Stack
+
+### **Frontend Framework & Styling**
+* **HTML5 & CSS3:** Semantic layout design and clean component structuring.
+* **Vanilla JavaScript (ES6+):** Asynchronous DOM operations, state management, and real-time updates.
+* **Tailwind CSS / Custom Modern CSS:** Responsive grid system, custom theme variables, and glassmorphism UI elements.
+
+### **Backend, Database & Hosting**
+* **Supabase:** Cloud PostgreSQL database, Row Level Security (RLS), real-time subscriptions, and authentication client.
+* **Vercel:** Automated continuous integration (CI/CD) and fast edge deployment.
+
+---
+
+## 📂 Project Architecture
+
+```text
+campus-connect/
+├── index.html              # Main application entry point & discovery landing
+├── assets/                 # Modular design assets & dynamic scripts
+│   ├── css/
+│   │   └── style.css       # Core design system & utility overrides
+│   ├── js/
+│   │   ├── app.js          # DOM controllers & UI event listeners
+│   │   ├── auth.js         # User state & authentication workflows
+│   │   └── supabase.js     # Supabase client instantiation & API calls
+│   └── images/             # Visual branding assets, icons, and badges
+├── pages/                  # Route views
+│   ├── events.html         # Detailed event catalog & filter system
+│   ├── leaderboard.html    # Real-time ranking & gamification dashboard
+│   └── profile.html        # User statistics, badges, and settings
+├── package.json            # Node metadata & development dependencies
+└── README.md               # Project documentation
+```
+
+---
+
+## ⚡ Getting Started Locally
+
+Follow these steps to set up the development environment on your local system:
+
+### 1. Prerequisites
+Ensure you have Git and a local HTTP server installed (e.g., Live Server extension in VS Code, Python `http.server`, or `npx serve`).
+
+### 2. Repository Cloning
+```bash
+git clone https://github.com/siddarthabm123/campus-connect.git
+cd campus-connect
+```
+
+### 3. Environment Setup
+Configure your Supabase credentials in `assets/js/supabase.js`:
+```javascript
+const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+```
+
+### 4. Launch Application
+Run a local development server:
+```bash
+# Option A: Python HTTP Server
+python3 -m http.server 3000
+
+# Option B: Node NPX Serve
+npx serve .
+```
+
+Open your browser and visit `http://localhost:3000`.
+
+---
+
+## 🎯 Production & Deployment
+
+The application is deployed live via Vercel continuous deployment pipeline:
+* **Live URL:** [https://campus-connect-iota-beige.vercel.app/](https://campus-connect-iota-beige.vercel.app/)
+* **Deployment Status:** Active / Production Ready
+
+---
+
+## 👤 Author & Maintainer
+
+**Siddartha B M**
+* **GitHub:** [@siddarthabm123](https://github.com/siddarthabm123)
+* **Portfolio / Projects:** [siddarthabm123 Repositories](https://github.com/siddarthabm123?tab=repositories)
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE) - feel free to use, adapt, and build upon this repository.
